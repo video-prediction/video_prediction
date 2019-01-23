@@ -11,6 +11,17 @@ def l2_loss(pred, target):
     return tf.reduce_mean(tf.square(target - pred))
 
 
+def normalize_tensor(tensor, eps=1e-10):
+    norm_factor = tf.norm(tensor, axis=-1, keepdims=True)
+    return tensor / (norm_factor + eps)
+
+
+def cosine_distance(tensor0, tensor1, keep_axis=None):
+    tensor0 = normalize_tensor(tensor0)
+    tensor1 = normalize_tensor(tensor1)
+    return tf.reduce_mean(tf.reduce_sum(tf.square(tensor0 - tensor1), axis=-1)) / 2.0
+                                
+
 def charbonnier_loss(x, epsilon=0.001):
     return tf.reduce_mean(tf.sqrt(tf.square(x) + tf.square(epsilon)))
 
@@ -43,6 +54,14 @@ def gan_loss(logits, labels, gan_loss_type):
     return loss
 
 
-def kl_loss(mu, log_sigma_sq):
-    sigma_sq = tf.exp(log_sigma_sq)
-    return -0.5 * tf.reduce_mean(tf.reduce_sum(1 + log_sigma_sq - tf.square(mu) - sigma_sq, axis=-1))
+def kl_loss(mu, log_sigma_sq, mu2=None, log_sigma2_sq=None):
+    if mu2 is None and log_sigma2_sq is None:
+        sigma_sq = tf.exp(log_sigma_sq)
+        return -0.5 * tf.reduce_mean(tf.reduce_sum(1 + log_sigma_sq - tf.square(mu) - sigma_sq, axis=-1))
+    else:
+        mu1 = mu
+        log_sigma1_sq = log_sigma_sq
+        return tf.reduce_mean(tf.reduce_sum(
+            (log_sigma2_sq - log_sigma1_sq) / 2
+            + (tf.exp(log_sigma1_sq) + tf.square(mu1 - mu2)) / (2 * tf.exp(log_sigma2_sq))
+            - 1 / 2, axis=-1))

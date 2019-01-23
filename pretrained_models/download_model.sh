@@ -64,7 +64,7 @@ fi
 TARGET_DIR=./pretrained_models/${DATASET_NAME}/${MODEL_NAME}
 mkdir -p ${TARGET_DIR}
 TAR_FNAME=${model_name_to_fname[${MODEL_NAME}]}.tar.gz
-echo "Unable to get anonymous URL"
+echo "Model downloading is disabled for anonymous submission since model URLs are not anonymous."
 exit 1
 
 URL=savp/pretrained_models/${TAR_FNAME}

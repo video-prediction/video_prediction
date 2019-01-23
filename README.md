@@ -18,13 +18,16 @@ TensorFlow implementation for stochastic adversarial video prediction. Given a s
 git clone -b master --single-branch https://github.com/video-prediction/video_prediction.git
 cd video_prediction
 ```
-- Install TensorFlow >= 1.5 and dependencies from http://tensorflow.org/
+- Install TensorFlow >= 1.9 and dependencies from http://tensorflow.org/
 - Install ffmpeg (optional, used to generate GIFs for visualization, e.g. in TensorBoard)
 - Install other dependencies
 ```bash
 pip install -r requirements.txt
 ```
-Note: in macOS, make sure that bash >= 4.0 is used (needed for associative arrays in `download_model.sh` script).
+### Miscellaneous installation considerations
+- In python >= 3.6, make sure to add the root directory to the `PYTHONPATH`, e.g. `export PYTHONPATH=path/to/video_prediction`.
+- For the best speed and experimental results, we recommend using cudnn version 7.3.0.29 and any tensorflow version >= 1.9 and <= 1.12. The final training loss is worse when using cudnn versions 7.3.1.20 or 7.4.1.5, compared to when using versions 7.3.0.29 and below.
+- In macOS, make sure that bash >= 4.0 is used (needed for associative arrays in `download_model.sh` script).
 
 ### Use a Pre-trained Model
 - Download and preprocess a dataset (e.g. `bair`):
@@ -53,7 +56,6 @@ CUDA_VISIBLE_DEVICES=0 python scripts/evaluate.py --input_dir data/bair \
   --results_dir results_test/bair_action_free
 ```
 - The results are saved in `results_test/bair_action_free/ours_savp`.
-- See evaluation details of our experiments in [`scripts/generate_all.sh`](scripts/generate_all.sh) and [`scripts/evaluate_all.sh`](scripts/evaluate_all.sh).
 
 ### Model Training
 - To train a model, download and preprocess a dataset (e.g. `bair`):
@@ -64,11 +66,14 @@ bash data/download_and_preprocess_dataset.sh bair
 ```bash
 CUDA_VISIBLE_DEVICES=0 python scripts/train.py --input_dir data/bair --dataset bair \
   --model savp --model_hparams_dict hparams/bair_action_free/ours_savp/model_hparams.json \
-  --output_dir logs/bair_action_free/ours_svap
+  --output_dir logs/bair_action_free/ours_savp
 ```
 - To view training and validation information (e.g. loss plots, GIFs of predictions), run `tensorboard --logdir logs/bair_action_free --port 6006` and open http://localhost:6006.
+  - Summaries corresponding to the training and validation set are named the same except that the tags of the latter end in "\_1".
+  - Summaries corresponding to the validation set with sequences that are longer than the ones used in training end in "\_2", if applicable (i.e. if the dataset's `long_sequence_length` differs from `sequence_length`).
+  - Summaries of the metrics over prediction steps are shown as 2D plots in the repurposed PR curves section. To see them, tensorboard needs to be built from source after commenting out two lines from their source code (see [tensorflow/tensorboard#1110](https://github.com/tensorflow/tensorboard/issues/1110)).
+  - Summaries with names starting with "eval\_" correspond to the best/average/worst metrics/images out of 100 samples for the stochastic models (as in the paper). The ones starting with "accum\_eval\_" are the same except that they where computed over (roughly) the whole validation set, as opposed to only a single minibatch of the validation set.
 - For multi-GPU training, set `CUDA_VISIBLE_DEVICES` to a comma-separated list of devices, e.g. `CUDA_VISIBLE_DEVICES=0,1,2,3`. To use the CPU, set `CUDA_VISIBLE_DEVICES=""`.
-- See more training details for other datasets and models in [`scripts/train_all.sh`](scripts/train_all.sh).
 
 ### Datasets
 Download the datasets using the following script. These datasets are collected by other researchers. Please cite their papers if you use the data.
@@ -91,12 +96,11 @@ bash pretrained_models/download_model.sh dataset_name model_name
 ```
 The `dataset_name` should be one of the following: `bair_action_free`, `kth`, or `bair`.
 The `model_name` should be one of the available pre-trained models:
-- `ours_savp`: our complete model, trained with variational and adversarial losses. Also referred to as `ours_vae_gan`.
+- `ours_savp`: our complete model, trained with variational, adversarial, and perceptual losses.
 
 The following are ablations of our model:
-- `ours_gan`: trained with L1 and adversarial loss, with latent variables sampled from the prior at training time.
+- `ours_gan`: trained with L1, adversarial, and perceptual loss, with latent variables sampled from the prior at training time.
 - `ours_vae`: trained with L1 and KL loss.
-- `ours_deterministic`: trained with L1 loss, with no stochastic latent variables.
 
 See [`pretrained_models/download_model.sh`](pretrained_models/download_model.sh) for a complete list of available pre-trained models.
 

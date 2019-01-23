@@ -122,7 +122,8 @@ hr {
 <center>
   <h1>Abstract</h1>
 </center>
-Being able to predict what may happen in the future requires an in-depth understanding of the physical and causal rules that govern the world. A model that is able to do so has a number of appealing applications, from robotic planning to representation learning. However, learning to predict raw future observations, such as frames in a video, is exceedingly challenging&mdash;the ambiguous nature of the problem can cause a naively designed model to average together possible futures into a single, blurry prediction. Recently, this has been addressed by two distinct approaches: (a) latent variational variable models that explicitly model underlying stochasticity and (b) adversarially-trained models that aim to produce naturalistic images. However, a standard latent variable model can struggle to produce realistic results, and a standard adversarially-trained model underutilizes latent variables and fails to produce diverse predictions. We show that these distinct methods are in fact complementary. Combining the two produces predictions that look more realistic to human raters and better cover the range of possible futures. Our method outperforms prior and concurrent work in these aspects.
+Predicting the future requires an understanding of how the world works. A model with this capability has a number of appealing applications, from robotic planning to representation learning. Predicting raw future observations, such as frames in a video, is challenging and ambiguous&mdash;a naively designed model will average together possible futures into a single, blurry prediction.
+Recently, this issue has been tackled by two distinct approaches: (a) latent variational variable models that explicitly model the underlying stochasticity and (b) adversarially-trained models that aim to produce naturalistic images. However, a standard latent variable model can struggle to produce realistic results, and a standard adversarially-trained model underutilizes latent variables and fails to produce diverse predictions. We show that these distinct methods are in fact complementary. Combining the two produces predictions that look more realistic to human raters and better cover the range of possible futures, outperforming previous work.
 <br>
 <hr>
 <center>
@@ -148,7 +149,7 @@ Being able to predict what may happen in the future requires an in-depth underst
 <center>
   <h1>Example Results</h1>
 </center>
-We show qualitative results of the video predictions achieved by our SAVP method, our GAN and VAE variants, and other approaches. SV2P is prior work from Babaeizadeh et al. 2017, while SVG is concurrent work from Denton & Fergus 2018. For the stochastic models, we show the prediction with the "best" similarity compared to the ground truth video (out of 100 samples), unless otherwise labeled. Yellow indicates predicted frames, and white indicates the conditioned frames. We also show that our model can predict several hundred frames into the future despite only being trained to predict 10 future frames.
+We show qualitative results of the video predictions achieved by our SAVP method, our GAN and VAE variants, and other approaches. SV2P is prior work from Babaeizadeh et al. 2017, while SVG is concurrent work from Denton & Fergus 2018. For the stochastic models, we show the prediction with the "best" similarity compared to the ground truth video (out of 100 samples), unless otherwise labeled. Yellow indicates predicted frames, and white indicates the conditioned frames.
 <br>
 <br>
 <table align=center width=750px>
@@ -159,10 +160,11 @@ We show qualitative results of the video predictions achieved by our SAVP method
   </tr>
   <tr>
     <td align=center>
-      <img src="./index_files/images/bair_action_free_00232.gif" width="100%"><br><br>
-      <img src="./index_files/images/bair_action_free_00025.gif" width="100%"><br><br>
-      <img src="./index_files/images/bair_action_free_00000.gif" width="100%"><br><br>
-      <img src="./index_files/images/bair_action_free_00032.gif" width="100%"><br>
+      <img src="./index_files/images/bair_action_free_00187.gif" width="100%"><br><br>
+      <img src="./index_files/images/bair_action_free_00148.gif" width="100%"><br><br>
+      <img src="./index_files/images/bair_action_free_00081.gif" width="100%"><br><br>
+      <img src="./index_files/images/bair_action_free_00026.gif" width="100%"><br>
+      <img src="./index_files/images/bair_action_free_00230.gif" width="100%"><br>
     </td>
   </tr>
   <!-- <tr>
@@ -176,27 +178,6 @@ We show qualitative results of the video predictions achieved by our SAVP method
   </tr> -->
 </table>
 <br>
-<table align=center width=468.75px>
-  <tr>
-    <td align=center>
-      <span style="font-size:22px">BAIR action-free robot pushing dataset <br> (500 time-steps)</span>
-    </td>
-  </tr>
-  <tr>
-    <td align=center>
-      <img src="./index_files/images/bair_action_free_long_random_00026.gif" width="100%"><br><br>
-      <img src="./index_files/images/bair_action_free_long_random_00051.gif" width="100%"><br>
-    </td>
-  </tr>
-  <!-- <tr>
-    <td>
-      <span style="font-size:18px;float:right">
-        <a href="savp/tables/bair_action_free_long_random/index.html">[Random samples (500 time-steps)]</a>
-      </span>
-    </td>
-  </tr> -->
-</table>
-<br>
 <table align=center width=750px>
   <tr>
     <td align=center>
@@ -205,12 +186,11 @@ We show qualitative results of the video predictions achieved by our SAVP method
   </tr>
   <tr>
     <td align=center>
-      <img src="./index_files/images/kth_00092.gif" width="100%"><br><br>
-      <img src="./index_files/images/kth_00105.gif" width="100%"><br><br>
-      <img src="./index_files/images/kth_00111.gif" width="100%"><br><br>
-      <img src="./index_files/images/kth_00004.gif" width="100%"><br><br>
-      <img src="./index_files/images/kth_00195.gif" width="100%"><br><br>
-      <img src="./index_files/images/kth_00039.gif" width="100%"><br>
+      <img src="./index_files/images/kth_00150.gif" width="100%"><br><br>
+      <img src="./index_files/images/kth_00587.gif" width="100%"><br><br>
+      <img src="./index_files/images/kth_00078.gif" width="100%"><br><br>
+      <img src="./index_files/images/kth_00595.gif" width="100%"><br><br>
+      <img src="./index_files/images/kth_00418.gif" width="100%"><br><br>
 		</td>
   </tr>
   <!-- <tr>
@@ -218,29 +198,6 @@ We show qualitative results of the video predictions achieved by our SAVP method
       <span style="font-size:18px;float:right">
         <a href="savp/tables/kth_all/index.html">[All test set]</a>
         <a href="savp/tables/kth_random/index.html">[Random samples]</a>
-      </span>
-    </td>
-  </tr> -->
-</table>
-<br>
-<table align=center width=750px>
-  <tr>
-    <td align=center>
-      <span style="font-size:22px">BAIR action-conditioned robot pushing dataset</span>
-    </td>
-  </tr>
-  <tr>
-    <td align=center>
-      <img src="./index_files/images/bair_00056.gif" width="100%"><br><br>
-      <img src="./index_files/images/bair_00026.gif" width="100%"><br><br>
-      <img src="./index_files/images/bair_00108.gif" width="100%"><br><br>
-      <img src="./index_files/images/bair_00033.gif" width="100%"><br>
-    </td>
-  </tr>
-  <!-- <tr>
-    <td>
-      <span style="font-size:18px;float:right">
-        <a href="savp/tables/bair_all/index.html">[All test set]</a>
       </span>
     </td>
   </tr> -->
